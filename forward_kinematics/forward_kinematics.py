@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider
 import math
 
 # 順運動学の計算

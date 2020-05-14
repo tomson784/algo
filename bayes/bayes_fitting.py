@@ -3,6 +3,10 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 xmin, xmax = 0, 5
+# wのサンプリング数
+w_sample_n = 100
+# 訓練データのサンプリング数
+x_sample_n = 5
 
 def f(w, x):
     return w[0] + w[1] * x
@@ -11,7 +15,7 @@ def f(w, x):
 mu_w = np.zeros(2)
 var_w = 0.1
 sigma_w = var_w * np.identity(2)
-w_prior = stats.multivariate_normal.rvs(mean=mu_w, cov=sigma_w, size=10)
+w_prior = stats.multivariate_normal.rvs(mean=mu_w, cov=sigma_w, size=w_sample_n)
 # wをプロット
 plt.scatter(w_prior[:,0], w_prior[:,1])
 plt.xlim(-2, 2)
@@ -29,7 +33,7 @@ plt.show()
 # 真のw
 w_true = [1, 1]
 var_y = 0.1
-x_sample = xmin + (xmax-xmin)*np.random.rand(10)
+x_sample = xmin + (xmax-xmin)*np.random.rand(x_sample_n)
 y_sample = stats.norm.rvs(loc=f(w_true, x_sample), scale=np.sqrt(var_y))
 for i in range(len(x_sample)):
     plt.plot(x_sample[i], y_sample[i], marker='.', color="black")
@@ -53,7 +57,7 @@ for i in range(len(y_sample)):
 y_phi_sum = np.sum(np.array(y_phi), axis=0)
 Mu = np.dot(Sigma, (1/var_y)*y_phi_sum)
 # wの事後確率
-w_post = stats.multivariate_normal.rvs(mean=Mu, cov=Sigma, size=10)
+w_post = stats.multivariate_normal.rvs(mean=Mu, cov=Sigma, size=w_sample_n)
 plt.scatter(w_post[:,0], w_post[:,1])
 plt.xlim(-2, 2)
 plt.ylim(-2, 2)
@@ -62,7 +66,7 @@ plt.show()
 for i in range(len(x_sample)):
     plt.plot(x_sample[i], y_sample[i], marker='.', color="black")
 for w in w_post:
-    plt.plot(x_s, f(w, x_s), alpha=0.5)
+    plt.plot(x_s, f(w, x_s), alpha=0.2)
 plt.plot(x_s, f(w_true, x_s), color="black")
 # plt.xlim(xmin, xmax)
 # plt.ylim(xmin, xmax)

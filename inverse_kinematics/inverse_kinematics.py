@@ -29,7 +29,7 @@ def fk(L, th):
     # 手先位置をNumPy配列に格納して返す
     return np.array([[0, 0], [x1, y1], [x2, y2]])
 
-def motion(event):  
+def motion(event):
     x = event.xdata
     y = event.ydata
 
@@ -49,7 +49,6 @@ def motion(event):
     ln2.set_data(p.T[0,1], p.T[1,1])
     ln3.set_data(p.T[0,2], p.T[1,2])
     plt.draw()
-
 
 plt.figure()
 plt.axes().set_aspect('equal')

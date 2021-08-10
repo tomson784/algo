@@ -3,7 +3,7 @@
 import numpy as np
 from pprint import pprint
 
-l = {
+node_l = {
     "S":0,
     "A":np.inf,
     "B":np.inf,
@@ -15,7 +15,7 @@ l = {
 }
 
 # 確定したルート
-l_ = {}
+node_l_ = {}
 
 edge = {
     "S":{"A":5, "B":4, "C":1},
@@ -30,30 +30,41 @@ edge = {
 
 while True:
     # 未確定ノードの中からルートが最小のノードの選択
-    if len(l) == 1:
-        min_edge = list(l.keys())[0]
+    if len(node_l) == 1:
+        min_edge = list(node_l.keys())[0]
     else:
-        min_edge = min(l, key=l.get)
+        min_edge = min(node_l, key=node_l.get)
 
-    # 確定したノードへのルートの削除
+    # 探索したノード間のルートの削除
     del_list = []
     for i in edge:
         for j in edge[i]:
             if j == min_edge:
                 del_list.append(i+j)
+    # print("探索したノード ", end="")
+    # print(del_list)
     for i in del_list:
         del edge[i[0]][i[1]]
+
+    # 探索したノードのコストが以前のものより小さければ更新する
     for i,j in edge[min_edge].items():
-        if (j + l[min_edge]) < l[i]:
-            l[i] = j + l[min_edge]
+        if (j + node_l[min_edge]) < node_l[i]:
+            node_l[i] = j + node_l[min_edge]
+
     # 確定したノードへのルートの削除
-    l_[min_edge] = l[min_edge]
+    node_l_[min_edge] = node_l[min_edge]
     if len(edge) == 1:
         break
-    node_min_route = min(edge[min_edge], key=edge[min_edge].get)
+    # node_min_route = min(edge[min_edge], key=edge[min_edge].get)
+    # print(node_min_route)
     del edge[min_edge]
-    del l[min_edge]
-    print(l)
-    print(l_)
-    print("-"*50)
-print(l_)
+    del node_l[min_edge]
+
+    print("未確定のノード ", end="")
+    print(node_l)
+    print("確定したノード ", end="")
+    print(node_l_)
+    print("-"*100)
+
+print("確定したノード ", end="")
+print(node_l_)
